@@ -2,16 +2,31 @@ version: '3'
 
 services:
 
+  db:
+      image: mysql:5.7
+      #command: --innodb-use-native-aio=0
+      container_name: db
+      restart: always
+      tty: true
+      volumes:
+        - ./mysql:/var/lib/mysql
+      environment:
+        - MYSQL_DATABASE=nodedb
+        - MYSQL_ROOT_PASSWORD=123
+      networks:
+        - node-network
+
   app:
       build:
         context: ./node
         dockerfile: Dockerfile.prod
       container_name: app
-      entrypoint: dockerize -wait tcp://db:3306 -timeout 20s ./runApp.sh
+      entrypoint:  dockerize -wait tcp://db:3306 -timeout 20s ./runnode.sh #docker-entrypoint.sh
       networks:
         - node-network
       volumes:
         - ./node:/usr/src/app
+      stdin_open: true
       tty: true
       ports:
         - "3000:3000"
@@ -32,22 +47,6 @@ services:
         - 8080:80 #o acesso à porta 8080 na máquina acessa a porta 80 do container
       depends_on:
         - app
-
-  db:
-      image: mysql:5.7
-      command: --innodb-use-native-aio=0
-      container_name: db
-      restart: always
-      tty: true
-      volumes:
-        - ./mysql:/var/lib/mysql
-      environment:
-        - MYSQL_DATABASE=nodedb
-        - MYSQL_USER=luksave
-        - MYSQL_ROOT_PASSWORD=123
-      networks:
-        - node-network
-
 
 networks:
     node-network:

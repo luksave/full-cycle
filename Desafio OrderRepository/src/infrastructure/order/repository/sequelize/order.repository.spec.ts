@@ -85,7 +85,7 @@ describe("Order repository test", () => {
     });
   });
 
-  /*
+ 
   it("should update an order", async () => {
     const orderRepository = new OrderRepository();
 
@@ -145,6 +145,6 @@ describe("Order repository test", () => {
     expect(orders).toHaveLength(2);
     expect(orders).toContainEqual(order);
     expect(orders).toContainEqual(order2);
-  });*/
+  });
 
 });

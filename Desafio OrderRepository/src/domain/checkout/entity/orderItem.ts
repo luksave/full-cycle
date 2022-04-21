@@ -6,6 +6,7 @@ export default class OrderItem {
     private _quantity: number;
     private _productId: string; // apontamento para o agregado Product
 
+    //Esse construtor está sendo chamado novamente com o preço do produto sendo o total
     constructor(id: string, name: string, price: number, productId: string, quantity: number) {
         this._id = id;
         this._name = name;
@@ -19,18 +20,18 @@ export default class OrderItem {
     }
 
     get name(): string {
-    return this._name;
+        return this._name;
     }
 
     get productId(): string {
-    return this._productId;
+        return this._productId;
     }
 
     get quantity(): number {
-    return this._quantity;
+        return this._quantity;
     }
 
     get price(): number {
-    return this._price * this._quantity;
+        return this._price * this._quantity;
     }
 }

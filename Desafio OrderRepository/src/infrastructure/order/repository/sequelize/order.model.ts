@@ -7,6 +7,7 @@ import {
     BelongsTo,
     HasMany,
   } from "sequelize-typescript";
+  
   import CustomerModel from "../../../customer/repository/sequelize/customer.model";
   import OrderItemModel from "./orderItem.model";
   
@@ -14,7 +15,6 @@ import {
     tableName: "orders",
     timestamps: false,
   })
-  
   export default class OrderModel extends Model {
     @PrimaryKey
     @Column

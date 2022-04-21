@@ -1,11 +1,11 @@
 import EventInterface from "../../@shared/event/event.interface";
 
 /**
- * O evento de um produto que foi criado está sendo representado por uma classes que implementa a interface EventInterface
+ * O evento de um cliente que foi criado está sendo representado por uma classes que implementa a interface EventInterface
  * Essa classe conhece o momento em que o evento ocorreu e a informação do evento
  */
 
-export default class ProductCreatedEvent implements EventInterface {
+export default class CustomerCreatedEvent implements EventInterface {
   dataTimeOccurred: Date;
   eventData: any;
 

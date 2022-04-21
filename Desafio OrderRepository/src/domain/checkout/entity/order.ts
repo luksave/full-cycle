@@ -1,5 +1,6 @@
 import OrderItem from "./orderItem";
 export default class Order {
+    [x: string]: any;
 
 
     //Se está em diferentes agregados, a relação é feita por ID
@@ -28,12 +29,16 @@ export default class Order {
         return this._customerId;
     }
 
+    set items(items: OrderItem[]) {
+        this._items = items;
+    }
+
     get items(): OrderItem[] {
         return this._items;
     }
 
-    changeCustomerId(id: string) {
-        this._customerId = id;
+    changeCustomerId(customerId: string) {
+        this._customerId = customerId;
         this.validate();
     }
 

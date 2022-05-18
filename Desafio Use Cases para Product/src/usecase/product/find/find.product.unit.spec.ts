@@ -60,7 +60,7 @@ describe("Unit Test find product use case", () => {
 
       expect(()=> { 
         return productFindUsecase.execute(input);
-      }).rejects.toThrow("Customer not found");
+      }).rejects.toThrow("Product not found");
     });
 
 

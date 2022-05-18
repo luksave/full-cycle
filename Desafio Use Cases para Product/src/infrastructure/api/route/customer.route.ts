@@ -4,7 +4,7 @@ import CreateCustomerUseCase from '../../../usecase/customer/create/create.custo
 import ListCustomerUseCase from '../../../usecase/customer/list/list.customer.usecase';
 import CustomerRepository from '../../customer/repository/sequelize/customer.repository';
 
-export const customerRoute = express.router();
+export const customerRoute = express.Router();
 
 customerRoute.post('/', async (req: Request, res: Response) => {
     const usecase = new CreateCustomerUseCase(new CustomerRepository());

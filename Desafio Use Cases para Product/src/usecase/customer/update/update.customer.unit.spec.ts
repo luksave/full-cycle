@@ -8,13 +8,13 @@ const customer = CustomerFactory.createWithAddress(
 );
 
 const input = {
-    id: "123",
-    name: "John Update",
+    id: customer.id,
+    name: "John Updated",
     address: {
-        street: "Street Update", 
+        street: "Street Updated", 
         number: 1234,
-        zip: "Zip Update", 
-        city: "City Update",
+        zip: "Zip Updated", 
+        city: "City Updated",
     },
 };
 

@@ -30,6 +30,9 @@ export default class Address {
     }
     
     validate() {
+      if (+this.number < 0){
+        throw new Error("Number must be greater than zero");
+      }
       if (this._street.length === 0) {
         throw new Error("Street is required");
       }

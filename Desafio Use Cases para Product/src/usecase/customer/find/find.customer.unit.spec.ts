@@ -36,7 +36,7 @@ describe("Unit Test find customer use case", () => {
         };
 
         const output = {
-            id: "123",
+            id: expect.any(String),
             name: "John",
             address: {
                 street: "Street", 
@@ -64,7 +64,7 @@ describe("Unit Test find customer use case", () => {
 
       expect(()=> { 
         return customerFindUsecase.execute(input);
-      }).rejects.toThrow("Customer note found");
+      }).rejects.toThrow("Customer not found");
     });
 
 

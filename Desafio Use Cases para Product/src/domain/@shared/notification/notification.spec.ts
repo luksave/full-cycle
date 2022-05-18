@@ -31,13 +31,23 @@ describe("Unit test for notification", () => {
 
         notification.addError(error3);
 
+        const error4 ={
+            message: "error message 4",
+            context: "product",
+        }
+
+        notification.addError(error4);
+        
         expect(notification.messages("customer"))
             .toBe("customer: error message,customer: error message 2,");
+        expect(notification.messages("product"))
+            .toBe("product: error message 4,");
         expect(notification.messages())
-            .toBe("customer: error message,customer: error message 2,order: error message 3,");
+            .toBe("customer: error message,customer: error message 2,order: error message 3,product: error message 4,");
+
     });
 
-    it("should check if not at least one error", () =>{
+    it("should check if notification has at least one customer error", () =>{
         const notification = new Notification
         const error = {
             message: "error message", 
@@ -49,7 +59,20 @@ describe("Unit test for notification", () => {
         expect(notification.hasErrors()).toBe(true);
     });
 
-    it("should get all errors props", () =>{
+    it("should check if notification has at least one product error", () =>{
+        const notification = new Notification
+        const error = {
+            message: "error message", 
+            context: "product",
+        };
+
+        notification.addError(error);
+
+        expect(notification.hasErrors()).toBe(true);
+    });
+
+
+    it("should get all errors props for customer", () =>{
         const notification = new Notification
         const error = {
             message: "error message", 
@@ -58,7 +81,20 @@ describe("Unit test for notification", () => {
 
         notification.addError(error);
 
-        expect(notification.getErrors).toEqual([error]);
+        expect(notification.getErrors()).toEqual([error]);
+    });
+
+    
+    it("should get all errors props for product", () =>{
+        const notification = new Notification
+        const error = {
+            message: "error message", 
+            context: "product",
+        };
+
+        notification.addError(error);
+
+        expect(notification.getErrors()).toEqual([error]);
     });
 
 

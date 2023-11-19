@@ -5,6 +5,7 @@ import Invoice from "../domain/invoice.entity";
 import InvoiceRepository from "./invoice.repository";
 import Address from "../../@shared/domain/value-object/address.value-objects";
 import InvoiceItems from "../domain/invoice-items.entity";
+import { InvoiceItemsModel } from "./invoice-items.model";
 
 describe("InvoiceRepository test", () => {
     let sequelize: Sequelize;
@@ -17,7 +18,7 @@ describe("InvoiceRepository test", () => {
         sync: { force: true },
         });
     
-        sequelize.addModels([InvoiceModel]);
+        sequelize.addModels([InvoiceModel, InvoiceItemsModel]);
         await sequelize.sync( {alter: true} );
     });
     
@@ -25,21 +26,8 @@ describe("InvoiceRepository test", () => {
         await sequelize.close();
     });
     
-    const items = [
-        {
-        id: "1",
-        name: "Product 1",
-        price: 10,
-        },
-        {
-        id: "2",
-        name: "Product 2",
-        price: 20,
-        },
-    ];
 
-    it("should create a invoice", async () => {
-
+    it("should create a invoice", async () => { 
         const address = new Address(
             "Rua 1",
             "123",
@@ -49,45 +37,60 @@ describe("InvoiceRepository test", () => {
             "12345678",
         );
 
-        const invoiceProps = {
+        const invoice = new Invoice({
             id: new Id("1"),
             name: "Name 1",
             document: "00000000",
             address: address,
-            items: items.map((item) => {
-                return new InvoiceItems({
-                id: new Id(item.id),
-                name: item.name,
-                price: item.price,
-                });
-            }),
-        };
-        const invoice = new Invoice(invoiceProps);
-        const invoiceRepository = new InvoiceRepository();
-        await invoiceRepository.generate(invoice);
-    
+            items: [
+                new InvoiceItems({
+                    id: new Id("1"),
+                    name: "Product 1",
+                    price: 10,
+                }),
+                new InvoiceItems({
+                    id: new Id("2"),
+                    name: "Product 2",
+                    price: 20,
+                }),
+            ]
+            
+        });
+
+        try {
+            const invoiceRepository = new InvoiceRepository();
+            await invoiceRepository.generate(invoice);
+
+            const todos = await InvoiceModel.findAll();
+            console.log("TODOS", todos);
+        } catch (error) {
+            console.error(error);
+        }
+
         const invoiceDb = await InvoiceModel.findOne({
-        where: { id: invoiceProps.id.id },
+            where: { id: invoice.id.id },
+            include: [InvoiceItemsModel],
         });
     
-        expect(invoiceProps.id.id).toEqual(invoiceDb.id);
-        expect(invoiceProps.document).toEqual(invoiceDb.document);
-        expect(invoiceProps.name).toEqual(invoiceDb.name);
-        expect(invoiceProps.address.street).toEqual(invoiceDb.street);
-        expect(invoiceProps.address.number).toEqual(invoiceDb.number);
-        expect(invoiceProps.address.complement).toEqual(invoiceDb.complement);
-        expect(invoiceProps.address.city).toEqual(invoiceDb.city);
-        expect(invoiceProps.address.state).toEqual(invoiceDb.state);
-        expect(invoiceProps.address.zipCode).toEqual(invoiceDb.zipCode);
-        expect(invoiceProps.items[0].id.id).toEqual(invoiceDb.items[0].id);
-        expect(invoiceProps.items[0].name).toEqual(invoiceDb.items[0].name);
-        expect(invoiceProps.items[0].price).toEqual(invoiceDb.items[0].price);
-        expect(invoiceProps.items[1].id.id).toEqual(invoiceDb.items[1].id);
-        expect(invoiceProps.items[1].name).toEqual(invoiceDb.items[1].name);
-        expect(invoiceProps.items[1].price).toEqual(invoiceDb.items[1].price);
-    });
+        expect(invoice.id.id).toEqual(invoiceDb?.id);
+        expect(invoice.document).toEqual(invoiceDb?.document);
+        expect(invoice.name).toEqual(invoiceDb?.name);
+        expect(invoice.address.street).toEqual(invoiceDb?.street);
+        expect(invoice.address.number).toEqual(invoiceDb?.number);
+        expect(invoice.address.complement).toEqual(invoiceDb?.complement);
+        expect(invoice.address.city).toEqual(invoiceDb?.city);
+        expect(invoice.address.state).toEqual(invoiceDb?.state);
+        expect(invoice.address.zipCode).toEqual(invoiceDb?.zipCode);
+        expect(invoice.items[0].id.id).toEqual(invoiceDb?.items[0].id);
+        expect(invoice.items[0].name).toEqual(invoiceDb?.items[0].name);
+        expect(invoice.items[0].price).toEqual(invoiceDb?.items[0].price);
+        expect(invoice.items[1].id.id).toEqual(invoiceDb?.items[1].id);
+        expect(invoice.items[1].name).toEqual(invoiceDb?.items[1].name);
+        expect(invoice.items[1].price).toEqual(invoiceDb?.items[1].price);
+    }, 50000);
 
     it("should find a invoice", async () => {
+
         const invoiceProps = {
             id: new Id("1"),
             name: "Name 1",
@@ -100,13 +103,18 @@ describe("InvoiceRepository test", () => {
                 "Estado 1",
                 "12345678",
             ),
-            items: items.map((item) => {
-                return new InvoiceItems({
-                id: new Id(item.id),
-                name: item.name,
-                price: item.price,
-                });
-            }),
+            items: [
+                new InvoiceItems({
+                    id: new Id("1"),
+                    name: "Product 1",
+                    price: 10,
+                }),
+                new InvoiceItems({
+                    id: new Id("2"),
+                    name: "Product 2",
+                    price: 20,
+                }),
+            ]
         };
         const invoice = new Invoice(invoiceProps);
         const invoiceRepository = new InvoiceRepository();

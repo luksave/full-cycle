@@ -1,22 +1,25 @@
-export interface FindInputDto {
+// DTO Find
+export interface FindInvoiceUseCaseInputDTO {
     id: string;
-}
-
-export interface FindOutputDto {
+  }
+  
+  export interface FindInvoiceUseCaseOutputDTO {
     id: string;
     name: string;
     document: string;
     address: {
-        street: string;
-        number: string;
-        complement: string;
-        city: string;
-        state: string;
-        zipCode: string;
+      street: string;
+      number: string;
+      complement: string;
+      city: string;
+      state: string;
+      zipCode: string;
     };
     items: {
-        id: string;
-        name: string;
-        price: number;
+      id: string;
+      name: string;
+      price: number;
     }[];
-}
+    total: number;
+    createdAt: Date;
+  }

@@ -1,12 +1,5 @@
 import { Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
-
-interface InvoiceItemsModel {
-    id: string;
-    name: string;
-    price: number;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import { InvoiceItemsModel } from "./invoice-items.model";
 
 @Table({
     tableName: "invoices",
@@ -44,8 +37,11 @@ export class InvoiceModel extends Model {
     @Column({ allowNull: false })
     zipCode: string;
     
-    @Column({ allowNull: false, type: DataType.JSON })
+    @HasMany(() => InvoiceItemsModel)
     items: InvoiceItemsModel[];
+
+    @Column({ allowNull: false })
+    total: number;
 
     @Column({ allowNull: false })
     createdAt: Date;

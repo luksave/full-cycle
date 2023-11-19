@@ -1,39 +1,34 @@
-export interface GenerateInputDto {
-    id?: string;
+// DTO Generate
+export interface GenerateInvoiceUseCaseInputDto {
     name: string;
     document: string;
-    address: {
-        street: string;
-        number: string;
-        complement: string;
-        city: string;
-        state: string;
-        zipCode: string;
-    };
+    street: string;
+    number: string;
+    complement: string;
+    city: string;
+    state: string;
+    zipCode: string;
     items: {
-        id: string;
-        name: string;
-        price: number;
+      id: string;
+      name: string;
+      price: number;
     }[];
-}
-
-export interface GenerateOutputDto {
+  }
+  
+  export interface GenerateInvoiceUseCaseOutputDto {
     id: string;
     name: string;
     document: string;
-    address: {
-        street: string;
-        number: string;
-        complement: string;
-        city: string;
-        state: string;
-        zipCode: string;
-    };
+    street: string;
+    number: string;
+    complement: string;
+    city: string;
+    state: string;
+    zipCode: string;
     items: {
-        id: string;
-        name: string;
-        price: number;
+      id: string;
+      name: string;
+      price: number;
     }[];
-    createdAt: Date;
-    updatedAt: Date;
-}
+    total: number;
+  }
